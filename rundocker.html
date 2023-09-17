@@ -1,0 +1,108 @@
+<script>
+function ajaxInt() {
+  var cn = document.getElementById("CName").value;
+  var ci = document.getElementById("CImage").value;
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("d1").innerHTML =
+    this.responseText;
+  }
+  xhttp.open("GET", "http://publicip:Localhost/run?cname" + cn + "&cimage=" + ci );
+  xhttp.send();
+}
+
+function forDockerPs() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("d2").innerHTML =
+    this.responseText;
+  }
+  xhttp.open("GET", "http://publicip:Localhost/ps");
+  xhttp.send();
+}
+
+function Dockerdel() {
+  var cdel = document.getElementById("dcon").value;
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("d3").innerHTML =
+    this.responseText;
+  }
+  xhttp.open("GET", "http://publicip:Localhost/del?dcon" + cdel);
+  xhttp.send();
+}
+
+function Dockerstop() {
+  var cst = document.getElementById("stcon").value;
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("d4").innerHTML =
+    this.responseText;
+  }
+  xhttp.open("GET", "http://publicip:Localhost/stop");
+  xhttp.send();
+}
+
+function Dockerstart() {
+  var cst = document.getElementById("startcon").value;
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("d5").innerHTML =
+    this.responseText;
+  }
+  xhttp.open("GET", "http://publicip:Localhost/start");
+  xhttp.send();
+}
+</script>
+
+<h1>Launch Container</h1>
+<form action="/run" method="GET">
+Name <input name="containerName" id="CName" />
+<br />
+image name
+<select name="containerImage" id="CImage">
+        <option data-img_src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Centos-logo-light.svg/987px-Centos-logo-light.svg.png?20151212075231">centos</option>
+        <option data-img_src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Ubuntu-logo-2022.svg/768px-Ubuntu-logo-2022.svg.png?20220421195347">ubuntu</option>
+        <option data-img_src="https://www.redhat.com/cms/managed-files/Asset-Red_Hat-Logo_page-Logo-RGB.svg?itok=yWDK-rRz">redhat</option>
+        <option data-img_src="http://talesfromthedatacenter.com/wp-content/uploads/2018/04/OracleTux_thumb.png">oracle</option>
+</select>
+<br />
+<input type="submit" />
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
+<script type="text/javascript">
+    function custom_template(obj){
+            var data = $(obj.element).data();
+            var text = $(obj.element).text();
+            if(data && data['img_src']){
+                img_src = data['img_src'];
+                template = $("<div><img src=\"" + img_src + "\" style=\"width:100%;height:150px;\"/><p style=\"font-weight: 700;font-size:14pt;text-align:center;\">" + text + "</p></div>");
+                return template;
+            }
+        }
+    var options = {
+        'templateSelection': custom_template,
+        'templateResult': custom_template,
+    }
+    $('#CImage').select2(options);
+    $('.select2-container--default .select2-selection--single').css({'height': '220px'});
+
+</script>
+
+<form>
+  Enter the container to be deleted:<input name="Delcontainer" id="dcon" />
+  Enter the container to be stopped:<input name="Stcontainer" id="stcon" />
+  Enter the container to be start:<input name="Startcontainer" id="startcon" />
+</form>
+<div id="d1"></div>
+<button onclick="ajaxInt"> Launch container </button>
+<div id="d2">This is my container list:</div>
+<button onclick="forDockerPs"> Refresh </button>
+<div id="d3">Delete Container</div>
+<button onclick="Dockerdel">Delete</button>
+<div id="d4">Stop Container</div>
+<button onclick="Dockerstop">Stop</button>
+<div id="d5">Start Container</div>
+<button onclick="Dockerstart">Start</button>
